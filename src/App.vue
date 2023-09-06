@@ -113,7 +113,7 @@
 
   function saveHistory() {
     if (requestedCity.value != undefined) {
-      searchHistory.value.unshift(requestedCity.value);
+      searchHistory.value.includes(requestedCity.value) || searchHistory.value.unshift(requestedCity.value);
     }
     if (searchHistory.value.length > 5 ) {
       searchHistory.value.splice(5,1);
@@ -128,7 +128,6 @@
   function removeHist() {
     localStorage.removeItem("history");
     searchHistory.value = [];
-    console.log('1')
   }
 
   function showHistoryWeather(cityName) {
