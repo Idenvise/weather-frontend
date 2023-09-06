@@ -1,18 +1,19 @@
 <script setup>
-    import { ref } from 'vue';
+  import { ref, watch } from 'vue';
+  import Day from './Day.vue'
+  
+  const props = defineProps(['weather', 'cityName'])
+  const days = ref(5);
 
-    const days = ref(0);
-    const city = ref('Здесь будет ваш город');
-    
-    function setDays(n) {
-        days.value = n;
-    }
+  function setDays(n) {
+      days.value = n;
+  }
 </script>
 
 <template>
     <section class="weather" aria-label="Погода">
         <div class="weather__city-wrapper">
-            <h1 class="weather__city">{{city}}</h1>
+            <h1 class="weather__city">{{cityName ? cityName  : 'Здесь будет ваш город'}}</h1>
             <button 
                 v-on:click=setDays(5) 
                 type="button" 
@@ -28,7 +29,15 @@
                 10 дней
             </button>
         </div>
-        
+        <Day 
+            v-for="(day, index) in weather" 
+            :key="index" 
+            :temp="day.main.temp" 
+            :date="day.dt_txt" 
+            :pic="day.weather[0].icon" 
+            :wind="day.wind.speed"
+            :rain="day.weather[0].description"
+        />
     </section>
 </template>
 
@@ -48,7 +57,7 @@
     }
 
     .weather__days-button {
-        background-color: #ECEEF2;
+        background-color: #e2e2e2;
         border: transparent;
         border-radius: 20px;
         height: 40px;
