@@ -22,6 +22,7 @@
             localStorage.setItem('user', JSON.stringify(res.user))
             setUserData(res.user.email, res.user._id);
             props.setLoggedInTrue();
+            props.closePopupSignin();
         }
         )
         .catch(err => console.log(err))

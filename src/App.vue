@@ -54,6 +54,12 @@
       .catch(err => console.log(err))
   })
 
+  watch(loggedIn, (newValue) => {
+    if (newValue) {
+      reqCounter.value = 0 
+    };
+  })
+
   watch(weather, (newValue) => {
     let arr = newValue.list.slice(0, 1).concat(newValue.list.slice(1).filter((n) => n.dt_txt.includes('12:00:00')));
     arr.length > 5 && arr.splice(1,1);
@@ -215,6 +221,7 @@
     </section>
   </header>
   <main class="main">
+    <span class="search__limit" :class="[reqCounter > 14 ? 'visible' : '']">Достигнут лимит запросов. Зарегистрируйтесь или войдите, чтобы продолжить.</span>
     <div class="search__history" :class="[searchFocused && searchHistory.length != 0 ? 'search__history-visible' : '']">
       <HistorySearch v-for="(text, index) in searchHistory" class="search__history__ul" :key="index"  :text="text" :showHistoryWeather="showHistoryWeather"/>
       <button class="search__remove-hist" type="button" v-on:click="removeHist">Очистить историю</button>
@@ -224,7 +231,14 @@
 </template>
 
 <style scoped>
+  .search__limit {
+    color: red;
+    display: none;
+  }
 
+  .visible {
+    display: flex;
+  }
   
   .profile {
     display: flex;
@@ -348,8 +362,9 @@
 
   .main {
     display: flex;
-    justify-content: center;
+    align-items: center;
     position: relative;
+    flex-direction: column;
   }
 
 </style>
